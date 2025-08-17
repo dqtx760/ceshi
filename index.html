@@ -1,36 +1,27 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>大强附件表</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Docsify 主题 + 自定义样式 -->
+  <!-- Docsify 主题样式 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  
+  <!-- 自定义 CSS：强制显示搜索框 -->
   <style>
-    /* 强制搜索框置顶且永不消失 */
+    /* 强制搜索框始终显示在顶部 */
     .search {
-      position: fixed !important;
-      top: 0 !important;
-      right: 0 !important;
-      width: 300px !important;
-      padding: 12px !important;
-      background: rgba(255,255,255,0.95) !important;
-      border-bottom: 1px solid #eee !important;
-      z-index: 9999 !important;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+      position: fixed;
+      top: 0;
+      right: 0;
+      padding: 10px;
+      background: white;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    /* 隐藏默认标题 */
-    .app-name, .app-name-link {
-      display: none !important;
-    }
-    /* 防止侧边栏被遮挡 */
-    .sidebar {
-      margin-top: 60px !important;
-    }
-    /* 搜索结果高亮样式 */
-    .search a:hover {
-      background: #f0f7ff !important;
+    /* 隐藏原始标题（dqtx） */
+    .app-name {
+      display: none;
     }
   </style>
 </head>
@@ -38,54 +29,33 @@
   <!-- 挂载点 -->
   <div id="app"></div>
 
-  <!-- 核心库和插件（严格按顺序加载） -->
+  <!-- Docsify 核心库 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
+  
+  <!-- 搜索插件 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=String.prototype.normalize"></script>
 
-  <!-- 强化版配置 -->
+  <!-- Docsify 配置 -->
   <script>
     window.$docsify = {
-      name: '',               // 彻底隐藏标题
-      loadSidebar: true,      // 必须启用
-      subMaxLevel: 3,         // 三级菜单展开
-      autoHeader: true,       // 自动标题序号
-      auto2top: true,         // 切换页面自动置顶
-      mergeNavbar: true,      // 合并导航栏
+      name: '', // 标题留空以隐藏默认标题
+      loadSidebar: true,     // 启用侧边栏
+      subMaxLevel: 3,        // 展开三级标题
+      autoHeader: true,      // 自动标题
       search: {
-        maxAge: 86400000,     // 缓存24小时
-        paths: 'auto',        // 关键！自动索引所有文件
-        placeholder: '🔍 搜索文档...',
-        noData: '🚫 没有结果',
-        depth: 4,             // 搜索四级标题
-        hideOtherSidebarContent: false, // 保持侧边栏展开
-        namespace: 'dqtx-docs', // 避免索引冲突
-      },
-      plugins: [
-        function(hook) {
-          hook.doneEach(function() {
-            // 每次路由切换后强制显示搜索框
-            const search = document.querySelector('.search');
-            if (search) search.style.display = 'block';
-          });
-        }
-      ]
+        maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+        paths: 'auto',    // 自动获取文档内容
+        placeholder: 'Type to search',
+        noData: 'No Results!',
+        depth: 2,        // 搜索标题的最大层级
+        hideOtherSidebarContent: false, // 是否隐藏其他侧边栏内容
+        namespace: 'website-1', // 避免搜索索引冲突
+        pathNamespaces: ['/zh-cn', '/ru-ru', '/ru-ru/v1'] // 使用不同的索引作为路径前缀
+      }
     };
   </script>
 
-  <!-- 搜索失败时的备用检测脚本 -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // 5秒后检查搜索是否生效
-      setTimeout(function() {
-        if (!document.querySelector('.search input')) {
-          console.error('搜索框加载失败！正在尝试重新注入...');
-          const script = document.createElement('script');
-          script.src = 'https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js?_=' + Date.now();
-          document.body.appendChild(script);
-        }
-      }, 5000);
-    });
-  </script>
+  <!-- 支持双音符匹配 -->
+  <script src="//polyfill.io/v3/polyfill.min.js?features=String.prototype.normalize"></script>
 </body>
 </html>
