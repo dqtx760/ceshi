@@ -4,52 +4,52 @@
   <meta charset="UTF-8">
   <title>大强附件表</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- 使用绝对路径确保CSS加载 -->
+  <!-- Docsify 主题样式 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  
+  <!-- 自定义 CSS：强制显示搜索框 -->
   <style>
-    /* 固定搜索框 */
+    /* 强制搜索框始终显示在顶部 */
     .search {
       position: fixed;
       top: 0;
       right: 0;
-      z-index: 100;
       padding: 10px;
       background: white;
+      z-index: 1000;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    /* 隐藏默认标题 */
+    /* 隐藏原始标题（dqtx） */
     .app-name {
       display: none;
-    }
-    /* 避免侧边栏被搜索框遮挡 */
-    .sidebar {
-      margin-top: 50px;
     }
   </style>
 </head>
 <body>
+  <!-- 挂载点 -->
   <div id="app"></div>
 
-  <!-- 核心库必须最先加载 -->
+  <!-- Docsify 核心库 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
-  <!-- 搜索插件必须紧随其后 -->
-  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-  <!-- Polyfill（兼容旧浏览器） -->
+  
+  <!-- 搜索插件 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+
+  <!-- Polyfill 确保兼容性 -->
   <script src="https://polyfill.io/v3/polyfill.min.js?features=String.prototype.normalize"></script>
 
-  <!-- 简化配置（参考有效案例） -->
+  <!-- Docsify 配置 -->
   <script>
     window.$docsify = {
-      name: '',         // 隐藏标题
-      loadSidebar: true, // 启用侧边栏
-      subMaxLevel: 3,   // 显示二级和三级菜单
-      auto2top: true,   // 页面切换自动滚动到顶部
-      search: {
-        maxAge: 86400000, // 缓存一天
-        paths: 'auto',   // 关键！自动索引所有链接
+      name: '', // 标题留空以隐藏默认标题
+      loadSidebar: true,     // 启用侧边栏
+      subMaxLevel: 3,        // 展开三级标题
+      autoHeader: true,      // 自动标题
+      search: {              // 搜索配置
+        maxAge: 86400000,    // 缓存有效期
         placeholder: '搜索...',
-        noData: '没有结果',
-        depth: 3         // 抓取三级标题
+        noData: '没有找到结果',
+        depth: 3             // 搜索三级标题
       }
     };
   </script>
