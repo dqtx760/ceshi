@@ -2,97 +2,90 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>blog - 好记性不如烂笔头</title>
+  <title>大强附件表</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- 原有样式保持不变 -->
-  <style>
-    body {
-      margin: 0;
-      background-color: #FAFAFA;
-      font-family: 'Pacifico', 'Inter', cursive;
-    }
-    /* 原有动画和按钮样式保持不变 */
-    .opening-screen { /* 保持不变 */ }
-    .opening-title { /* 保持不变 */ }
-    .opening-subtitle { /* 保持不变 */ }
-    .button { /* 保持不变 */ }
-    /* ...其他原有样式... */
-  </style>
-
-  <!-- Docsify 必需资源 -->
+  <!-- Docsify 主题 + 自定义样式 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* 强制搜索框置顶且永不消失 */
+    .search {
+      position: fixed !important;
+      top: 0 !important;
+      right: 0 !important;
+      width: 300px !important;
+      padding: 12px !important;
+      background: rgba(255,255,255,0.95) !important;
+      border-bottom: 1px solid #eee !important;
+      z-index: 9999 !important;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    }
+    /* 隐藏默认标题 */
+    .app-name, .app-name-link {
+      display: none !important;
+    }
+    /* 防止侧边栏被遮挡 */
+    .sidebar {
+      margin-top: 60px !important;
+    }
+    /* 搜索结果高亮样式 */
+    .search a:hover {
+      background: #f0f7ff !important;
+    }
+  </style>
 </head>
 <body>
-  <!-- 原有开场动画 -->
-  <div class="opening-screen">
-    <h1 class="opening-title">blog</h1>
-    <p class="opening-subtitle">好记性不如烂笔头</p>
-    
-    <div class="button" id="enterButton">
-      <!-- 保持原有按钮结构 -->
-    </div>
-  </div>
+  <!-- 挂载点 -->
+  <div id="app"></div>
 
-  <!-- Docsify 挂载点 (隐藏初始状态) -->
-  <div id="app" style="display:none;"></div>
-
-  <!-- 核心脚本 -->
+  <!-- 核心库和插件（严格按顺序加载） -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=String.prototype.normalize"></script>
 
-  <!-- 配置 Docsify -->
+  <!-- 强化版配置 -->
   <script>
-    // 按钮跳转逻辑
-    document.getElementById('enterButton').addEventListener('click', function() {
-      document.querySelector('.opening-screen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      window.location.hash = '#/docs/1.md';
-    });
-
-    // Docsify 配置
     window.$docsify = {
-      name: 'blog',
-      repo: '',
-      loadSidebar: true,      // 启用侧边栏
-      subMaxLevel: 2,         // 显示二级菜单
-      auto2top: true,         // 切换页面自动滚动顶部
-      coverpage: false,       // 禁用封面页
+      name: '',               // 彻底隐藏标题
+      loadSidebar: true,      // 必须启用
+      subMaxLevel: 3,         // 三级菜单展开
+      autoHeader: true,       // 自动标题序号
+      auto2top: true,         // 切换页面自动置顶
+      mergeNavbar: true,      // 合并导航栏
       search: {
-        maxAge: 86400000,     // 缓存1天
-        paths: 'auto',        // 自动索引
-        placeholder: '搜索笔记...',
-        noData: '找不到结果',
-        depth: 3              // 搜索深度
+        maxAge: 86400000,     // 缓存24小时
+        paths: 'auto',        // 关键！自动索引所有文件
+        placeholder: '🔍 搜索文档...',
+        noData: '🚫 没有结果',
+        depth: 4,             // 搜索四级标题
+        hideOtherSidebarContent: false, // 保持侧边栏展开
+        namespace: 'dqtx-docs', // 避免索引冲突
       },
-      
-      // 自定义加载逻辑
-      hooks: {
-        init: function() {
-          // 如果直接访问文档页，隐藏开场动画
-          if(window.location.hash.includes('#/docs/')) {
-            document.querySelector('.opening-screen').style.display = 'none';
-            document.getElementById('app').style.display = 'block';
-          }
+      plugins: [
+        function(hook) {
+          hook.doneEach(function() {
+            // 每次路由切换后强制显示搜索框
+            const search = document.querySelector('.search');
+            if (search) search.style.display = 'block';
+          });
         }
-      }
+      ]
     };
   </script>
 
-  <!-- 强制显示搜索框的样式 -->
-  <style>
-    .search {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-    }
-    /* 确保侧边栏不会被遮挡 */
-    .sidebar {
-      margin-top: 60px;
-    }
-  </style>
+  <!-- 搜索失败时的备用检测脚本 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 5秒后检查搜索是否生效
+      setTimeout(function() {
+        if (!document.querySelector('.search input')) {
+          console.error('搜索框加载失败！正在尝试重新注入...');
+          const script = document.createElement('script');
+          script.src = 'https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js?_=' + Date.now();
+          document.body.appendChild(script);
+        }
+      }, 5000);
+    });
+  </script>
 </body>
 </html>
