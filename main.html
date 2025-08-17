@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>大强附件表</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Docsify 主题样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  
+  <!-- 自定义 CSS：强制显示搜索框 -->
+  <style>
+    /* 强制搜索框始终显示在顶部 */
+    .search {
+      position: fixed;
+      top: 0;
+      right: 0;
+      padding: 10px;
+      background: white;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    /* 隐藏原始标题（dqtx） */
+    .app-name {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- 挂载点 -->
+  <div id="app"></div>
+
+  <!-- Docsify 核心库 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
+  
+  <!-- 搜索插件 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+
+  <!-- Docsify 配置 -->
+  <script>
+    window.$docsify = {
+      name: '', // 标题留空以隐藏默认标题
+      loadSidebar: true,     // 启用侧边栏
+      subMaxLevel: 3,        // 展开三级标题
+      autoHeader: true,      // 自动标题
+      search: {              // 搜索配置
+        placeholder: '搜索...',
+        noData: '没有找到结果',
+        depth: 3             // 搜索三级标题
+      }
+    };
+  </script>
+</body>
+</html>
