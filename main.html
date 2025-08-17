@@ -5,51 +5,52 @@
   <title>大强附件表</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Docsify 主题样式 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   
-  <!-- 自定义 CSS：强制显示搜索框 -->
+  <!-- 自定义 CSS：防止搜索框被隐藏 -->
   <style>
-    /* 强制搜索框始终显示在顶部 */
+    /* 确保搜索框可见 */
     .search {
+      display: block !important; /* 强制显示 */
       position: fixed;
       top: 0;
-      right: 0;
-      padding: 10px;
+      right: 10px;
+      z-index: 9999; /* 提高层级 */
       background: white;
-      z-index: 1000;
+      padding: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    /* 隐藏原始标题（dqtx） */
+    /* 避免标题冲突 */
     .app-name {
-      display: none;
+      display: none !important;
     }
   </style>
 </head>
 <body>
-  <!-- 挂载点 -->
   <div id="app"></div>
 
-  <!-- Docsify 核心库 -->
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
+  <!-- Docsify 核心库（改用协议自适应的 URL） -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   
-  <!-- 搜索插件 -->
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <!-- 搜索插件（必须加载） -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
 
-  <!-- Polyfill 确保兼容性 -->
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=String.prototype.normalize"></script>
+  <!-- Polyfill 关键功能（确保搜索兼容性） -->
+  <script src="//polyfill.io/v3/polyfill.min.js?features=String.prototype.normalize"></script>
 
   <!-- Docsify 配置 -->
   <script>
     window.$docsify = {
-      name: '', // 标题留空以隐藏默认标题
-      loadSidebar: true,     // 启用侧边栏
-      subMaxLevel: 3,        // 展开三级标题
-      autoHeader: true,      // 自动标题
-      search: {              // 搜索配置
-        maxAge: 86400000,    // 缓存有效期
+      name: '', // 隐藏默认标题
+      loadSidebar: true,
+      subMaxLevel: 3,
+      autoHeader: true,
+      search: {
+        maxAge: 86400000, // 缓存时间
         placeholder: '搜索...',
         noData: '没有找到结果',
-        depth: 3             // 搜索三级标题
+        depth: 3,
+        hideOtherSidebarContent: false // 避免内容被隐藏
       }
     };
   </script>
